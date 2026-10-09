@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Whoop Authorization</title></head>
+<body style="font-family:system-ui;max-width:640px;margin:2em auto;padding:0 1em;text-align:center">
+<h1>Whoop Authorization</h1>
+<p id="msg">Waiting for authorization code…</p>
+<pre id="code" style="font-size:1.4em;background:#f0f0f0;padding:1em;word-break:break-all;display:none"></pre>
+<button id="copy" style="display:none;font-size:1.1em;padding:.6em 1.2em">Copy code</button>
+<script>
+const p = new URLSearchParams(location.search);
+const code = p.get('code'), err = p.get('error');
+const msg = document.getElementById('msg'), pre = document.getElementById('code'), btn = document.getElementById('copy');
+if (code) {
+  msg.textContent = 'Authorized! Copy this code and paste it to Vera:';
+  pre.textContent = code; pre.style.display = 'block'; btn.style.display = 'inline-block';
+  btn.onclick = () => navigator.clipboard.writeText(code).then(() => btn.textContent = 'Copied!');
+} else if (err) {
+  msg.textContent = 'Authorization failed: ' + err;
+} else {
+  msg.textContent = 'No authorization code found in the URL.';
+}
+</script>
+</body></html>
